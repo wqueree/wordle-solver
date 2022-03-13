@@ -11,5 +11,5 @@ if __name__ == "__main__":
             if len(line) == 5:
                 fives.append(line.upper())
             line: str = words_file.readline().strip()
-    fives_series: pd.Series = pd.Series(fives)
-    fives_series.to_csv("fives.csv")
+    fives_series: pd.Series = pd.Series(fives, name="word")
+    fives_series.to_csv("fives.csv", index=False)
