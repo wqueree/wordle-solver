@@ -7,7 +7,6 @@ def solve():
     """Solves Wordle"""
     fives: pd.DataFrame = pd.DataFrame(pd.read_csv(Path("fives.csv")))
     attempts: int = 6
-    valid: Set[str] = {chr(i) for i in range(65, 91)}
     pattern_sets: List[Set[str]] = [{chr(i) for i in range(65, 91)} for i in range(5)]
     pattern_strings: List[str] = [0, 0, 0, 0, 0]
     while attempts > 0:
