@@ -1,3 +1,5 @@
+"""Solves Wordle"""
+
 from pathlib import Path
 from typing import List, Set
 import pandas as pd
@@ -7,8 +9,8 @@ def solve():
     """Solves Wordle"""
     fives: pd.DataFrame = pd.DataFrame(pd.read_csv(Path("fives.csv")))
     attempts: int = 6
-    valid: Set[str] = {chr(i) for i in range(65, 91)}
-    pattern = ["[ABCDEFGHIJKLMNOPQRSTUVWXYZ]"] * 5
+    pattern_sets: List[Set[str]] = [{chr(i) for i in range(65, 91)} for i in range(5)]
+    pattern_strings: List[str] = [0, 0, 0, 0, 0]
     while attempts > 0:
         attempt_valid = set()
         test_word = fives.iloc[0]["word"]
@@ -18,22 +20,23 @@ def solve():
         if colours == "GGGGG":
             return "WIN"
         colours_chars: List[str] = list(colours)
-        invalid = set()
+        global_invalid = set()
         for i, (letter, state) in enumerate(zip(test_word_chars, colours_chars)):
             if state == "B" and letter not in attempt_valid:
-                invalid.add(letter)
+                global_invalid.add(letter)
             if state == "Y":
                 fives = fives[fives.word.str.contains(letter)]
                 attempt_valid.add(letter)
+                pattern_sets[i].remove(letter)
             elif state == "G":
                 fives = fives[fives.word.str[i] == letter]
-                pattern[i] = letter
-        valid -= invalid
-        new_pattern = f"[{''.join(list(valid))}]"
-        for j, elem in enumerate(pattern):
+                pattern_sets[i] = {letter}
+        for i, elem in enumerate(pattern_sets):
             if len(elem) > 1:
-                pattern[j] = new_pattern
-        fives = fives[fives.word.str.contains("".join(pattern))]
+                pattern_sets[i] -= global_invalid
+            pattern_strings[i] = f"[{''.join(list(pattern_sets[i]))}]"
+        reduction_pattern = "".join(pattern_strings)
+        fives = fives[fives.word.str.contains(reduction_pattern)]
         attempts -= 1
     return "LOSS"
 
