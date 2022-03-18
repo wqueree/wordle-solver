@@ -24,3 +24,10 @@ From here, we are able to build a regular expression string to filter by.
 Sorting the wordle answer set, which is what `words.txt` contains, by how common those words are is bogus, as each of those words is (in theory) equally likely. 
 
 An improvement I propose to fix this is one that allows us to eliminate as many words as possible. So, first sorting by words that only contain unique letters, and then by those that contain the most common characters in the english language.
+
+## Usage
+```bash
+$ pip install -r requirements.txt
+$ python generate_fives.py
+$ python solver.py
+```
