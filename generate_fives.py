@@ -1,3 +1,5 @@
+"""Generates fives.csv"""
+
 from pathlib import Path
 from typing import List
 import pandas as pd

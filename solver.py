@@ -1,3 +1,5 @@
+"""Solves Wordle"""
+
 from pathlib import Path
 from typing import List, Set
 import pandas as pd
